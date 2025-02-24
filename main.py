@@ -24,14 +24,3 @@ class Category:
         self.products = products
         Category.count_category += 1
         Category.count_products += len(products)
-
-
-if __name__ == "__main__":
-    pr_1 = Product("g", "g", 3, 4)
-    pr_2 = Product("h", "h", 5, 6)
-
-    ct_1 = Category("t", "t", [pr_1, pr_2])
-    ct_2 = Category("t", "t", [pr_2])
-
-    print(ct_1.name)
-    print(ct_1.count_products)
