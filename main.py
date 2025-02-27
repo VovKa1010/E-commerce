@@ -10,6 +10,19 @@ class Product:
         self.price = price
         self.quantity = quantity
 
+    @classmethod
+    def new_product(cls, new_product: dict, old_products: list = None):
+        if old_products is None:
+            return cls(**new_product)
+        else:
+            for old_product in old_products:
+                if old_product["name"] == new_product["name"]:
+                    new_product["quantity"] += old_product["quantity"]
+                    if old_product["price"] > new_product["price"]:
+                        new_product["price"] = old_product["price"]
+
+            return cls(**new_product)
+
 
 class Category:
     name: str
