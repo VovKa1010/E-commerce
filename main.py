@@ -10,6 +10,9 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
     @property
     def price(self):
         return self.__price
@@ -53,6 +56,9 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {self.product_count} шт."
+
     def add_product(self, product: Product):
         if isinstance(product, Product):
             self.__products.append(product)
@@ -62,6 +68,6 @@ class Category:
     def products(self):
         result = ""
         for product in self.__products:
-            result += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            result += f"{product}\n"
 
         return result
