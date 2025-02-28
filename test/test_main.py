@@ -114,3 +114,5 @@ def test_category_init(category_fruits):
 def test_category_add_product(category_fruits, product_oranges):
     category_fruits.add_product(product_oranges)
     assert category_fruits.product_count == 5
+    category_fruits.add_product(None)
+    assert category_fruits.product_count == 5
