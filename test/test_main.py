@@ -69,6 +69,15 @@ def test_product_init(product_appel, product_oranges):
     assert product_oranges.quantity == 5
 
 
+def test_product_str(product_appel, product_oranges):
+    assert str(product_appel) == "appel, 10 руб. Остаток: 15 шт."
+    assert str(product_oranges) == "oranges, 20 руб. Остаток: 5 шт."
+
+
+def test_product_add(product_appel, product_oranges):
+    assert product_appel + product_oranges == 250
+
+
 def test_product_price(product_appel, monkeypatch):
     assert product_appel.price == 10
 
@@ -111,8 +120,12 @@ def test_category_init(category_fruits):
     assert category_fruits.product_count == 2
 
 
+def test_category_str(category_fruits):
+    assert str(category_fruits) == "fruits, количество продуктов: 4 шт."
+
+
 def test_category_add_product(category_fruits, product_oranges):
     category_fruits.add_product(product_oranges)
-    assert category_fruits.product_count == 5
+    assert category_fruits.product_count == 7
     category_fruits.add_product(None)
-    assert category_fruits.product_count == 5
+    assert category_fruits.product_count == 7
