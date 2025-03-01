@@ -121,7 +121,7 @@ def test_category_init(category_fruits):
 
 
 def test_category_str(category_fruits):
-    assert str(category_fruits) == "fruits, количество продуктов: 4 шт."
+    assert str(category_fruits) == "fruits, количество продуктов: 20 шт."
 
 
 def test_category_add_product(category_fruits, product_oranges):

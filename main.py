@@ -61,7 +61,8 @@ class Category:
         Category.product_count += len(products)
 
     def __str__(self):
-        return f"{self.name}, количество продуктов: {self.product_count} шт."
+        sum_products_quantity = sum([product.quantity for product in self.__products])
+        return f"{self.name}, количество продуктов: {sum_products_quantity} шт."
 
     def add_product(self, product: Product):
         if isinstance(product, Product):
