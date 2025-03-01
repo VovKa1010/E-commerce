@@ -3,13 +3,38 @@ from src.product import *
 
 
 @pytest.fixture()
-def product_appel():
-    return Product("appel", "appel description", 10, 15)
+def product_1():
+    return Product("1", "1 description", 10, 15)
 
 
 @pytest.fixture()
-def product_oranges():
-    return Product("oranges", "oranges description", 20, 5)
+def product_2():
+    return Product("2", "2 description", 20, 5)
+
+
+@pytest.fixture()
+def smartphone():
+    return Smartphone(
+        "Iphone 15",
+        "512GB, Gray space",
+        210000.0,
+        8,
+        98.2,
+        "15",
+        512,
+        "Gray space")
+
+
+@pytest.fixture()
+def lawn_grass():
+    return LawnGrass(
+        "Газонная трава",
+        "Элитная трава для газона",
+        500.0,
+        20,
+        "Россия",
+        "7 дней",
+        "Зеленый")
 
 
 @pytest.fixture()
@@ -52,45 +77,78 @@ def old_products_list():
     ]
 
 
-def test_product_init(product_appel, product_oranges):
-    assert product_appel.name == "appel"
-    assert product_appel.description == "appel description"
-    assert product_appel.price == 10
-    assert product_appel.quantity == 15
-    assert product_oranges.name == "oranges"
-    assert product_oranges.description == "oranges description"
-    assert product_oranges.price == 20
-    assert product_oranges.quantity == 5
+def test_product_init(product_1):
+    assert product_1.name == "1"
+    assert product_1.description == "1 description"
+    assert product_1.price == 10
+    assert product_1.quantity == 15
 
 
-def test_product_str(product_appel, product_oranges):
-    assert str(product_appel) == "appel, 10 руб. Остаток: 15 шт."
-    assert str(product_oranges) == "oranges, 20 руб. Остаток: 5 шт."
+def test_smartphone_init(smartphone):
+    assert smartphone.name == "Iphone 15"
+    assert smartphone.description == "512GB, Gray space"
+    assert smartphone.price == 210000.0
+    assert smartphone.quantity == 8
+    assert smartphone.efficiency == 98.2
+    assert smartphone.model == "15"
+    assert smartphone.memory == 512
+    assert smartphone.color == "Gray space"
 
 
-def test_product_add(product_appel, product_oranges):
-    assert product_appel + product_oranges == 250
+def test_lawn_grass_init(lawn_grass):
+    assert lawn_grass.name == "Газонная трава"
+    assert lawn_grass.description == "Элитная трава для газона"
+    assert lawn_grass.price == 500.0
+    assert lawn_grass.quantity == 20
+    assert lawn_grass.country == "Россия"
+    assert lawn_grass.germination_period == "7 дней"
+    assert lawn_grass.color == "Зеленый"
 
 
-def test_product_price(product_appel, monkeypatch):
-    assert product_appel.price == 10
+def test_product_str(product_1):
+    assert str(product_1) == "1, 10 руб. Остаток: 15 шт."
 
-    product_appel.price = 15
-    assert product_appel.price == 15
 
-    product_appel.price = 0
-    assert product_appel.price == 15
+def test_product_add(product_1, product_2):
+    assert product_1 + product_2 == 250
 
-    product_appel.price = -10
-    assert product_appel.price == 15
+
+def test_product_add_smartphone(smartphone):
+    assert smartphone + smartphone == 3360000
+
+
+def test_product_add_lawn_grass(lawn_grass):
+    assert lawn_grass + lawn_grass == 20000
+
+
+def test_product_add_lawn_grass_with_smartphone_exception(lawn_grass, smartphone):
+    try:
+        lawn_grass + smartphone
+    except TypeError:
+        assert True
+    else:
+        assert False
+
+
+def test_product_price(product_1, monkeypatch):
+    assert product_1.price == 10
+
+    product_1.price = 15
+    assert product_1.price == 15
+
+    product_1.price = 0
+    assert product_1.price == 15
+
+    product_1.price = -10
+    assert product_1.price == 15
 
     monkeypatch.setattr("builtins.input", lambda _: "n")
-    product_appel.price = 10
-    assert product_appel.price == 15
+    product_1.price = 10
+    assert product_1.price == 15
 
     monkeypatch.setattr("builtins.input", lambda _: "y")
-    product_appel.price = 10
-    assert product_appel.price == 10
+    product_1.price = 10
+    assert product_1.price == 10
 
 
 def test_new_product(new_product_dict, old_products_list):
