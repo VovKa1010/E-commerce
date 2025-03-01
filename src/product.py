@@ -14,8 +14,10 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             return (self.price * self.quantity) + (other.price * other.quantity)
+
+        raise TypeError
 
     @property
     def price(self):
@@ -46,33 +48,27 @@ class Product:
             return cls(**new_product)
 
 
-class Category:
-    name: str
-    description: str
-    __products: [Product]
-    category_count = 0
-    product_count = 0
+class Smartphone(Product):
+    efficiency: float
+    model: str
+    memory: int
+    color: str
 
-    def __init__(self, name, description, products):
-        self.name = name
-        self.description = description
-        self.__products = products
-        Category.category_count += 1
-        Category.product_count += len(products)
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self. color = color
 
-    def __str__(self):
-        sum_products_quantity = sum([product.quantity for product in self.__products])
-        return f"{self.name}, количество продуктов: {sum_products_quantity} шт."
 
-    def add_product(self, product: Product):
-        if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
+class LawnGrass(Product):
+    country: str
+    germination_period: str
+    color: str
 
-    @property
-    def products(self):
-        result = ""
-        for product in self.__products:
-            result += f"{product}\n"
-
-        return result
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
