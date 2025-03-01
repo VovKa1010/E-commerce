@@ -1,5 +1,5 @@
 import pytest
-from main import *
+from src.product import *
 
 
 @pytest.fixture()
@@ -50,12 +50,6 @@ def old_products_list():
             "quantity": 8
         }
     ]
-
-
-@pytest.fixture()
-def category_fruits(product_appel, product_oranges):
-    products = [product_appel, product_oranges]
-    return Category("fruits", "fruits description", products)
 
 
 def test_product_init(product_appel, product_oranges):
@@ -110,22 +104,3 @@ def test_new_product(new_product_dict, old_products_list):
     assert pr_2.description == "256GB, Серый цвет, 200MP камера"
     assert pr_2.price == 220000
     assert pr_2.quantity == 15
-
-
-def test_category_init(category_fruits):
-    assert category_fruits.name == "fruits"
-    assert category_fruits.description == "fruits description"
-    assert category_fruits.products == "appel, 10 руб. Остаток: 15 шт.\noranges, 20 руб. Остаток: 5 шт.\n"
-    assert category_fruits.category_count == 1
-    assert category_fruits.product_count == 2
-
-
-def test_category_str(category_fruits):
-    assert str(category_fruits) == "fruits, количество продуктов: 20 шт."
-
-
-def test_category_add_product(category_fruits, product_oranges):
-    category_fruits.add_product(product_oranges)
-    assert category_fruits.product_count == 7
-    category_fruits.add_product(None)
-    assert category_fruits.product_count == 7
