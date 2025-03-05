@@ -130,6 +130,15 @@ def test_product_add_lawn_grass_with_smartphone_exception(lawn_grass, smartphone
         assert False
 
 
+def test_product_add_lawn_grass_with_product(lawn_grass, product_1):
+    try:
+        lawn_grass + product_1
+    except TypeError:
+        assert True
+    else:
+        assert False
+
+
 def test_product_price(product_1, monkeypatch):
     assert product_1.price == 10
 
