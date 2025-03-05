@@ -1,14 +1,14 @@
-from src.product import *
+from src.product.product import *
 
 
 class Category:
     name: str
     description: str
-    __products: [Product]
+    __products: list
     category_count = 0
     product_count = 0
 
-    def __init__(self, name, description, products):
+    def __init__(self, name, description, products=None):
 
         for product in products:
             if not isinstance(product, Product):
@@ -16,9 +16,9 @@ class Category:
 
         self.name = name
         self.description = description
-        self.__products = products
+        self.__products = products if products else []
         Category.category_count += 1
-        Category.product_count += len(products)
+        Category.product_count += len(products) if products else 0
 
     def __str__(self):
         sum_products_quantity = sum([product.quantity for product in self.__products])

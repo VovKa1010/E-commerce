@@ -1,5 +1,5 @@
 import pytest
-from src.product import *
+from src.product.product import Product
 
 
 @pytest.fixture()
@@ -10,31 +10,6 @@ def product_1():
 @pytest.fixture()
 def product_2():
     return Product("2", "2 description", 20, 5)
-
-
-@pytest.fixture()
-def smartphone():
-    return Smartphone(
-        "Iphone 15",
-        "512GB, Gray space",
-        210000.0,
-        8,
-        98.2,
-        "15",
-        512,
-        "Gray space")
-
-
-@pytest.fixture()
-def lawn_grass():
-    return LawnGrass(
-        "Газонная трава",
-        "Элитная трава для газона",
-        500.0,
-        20,
-        "Россия",
-        "7 дней",
-        "Зеленый")
 
 
 @pytest.fixture()
@@ -84,27 +59,6 @@ def test_product_init(product_1):
     assert product_1.quantity == 15
 
 
-def test_smartphone_init(smartphone):
-    assert smartphone.name == "Iphone 15"
-    assert smartphone.description == "512GB, Gray space"
-    assert smartphone.price == 210000.0
-    assert smartphone.quantity == 8
-    assert smartphone.efficiency == 98.2
-    assert smartphone.model == "15"
-    assert smartphone.memory == 512
-    assert smartphone.color == "Gray space"
-
-
-def test_lawn_grass_init(lawn_grass):
-    assert lawn_grass.name == "Газонная трава"
-    assert lawn_grass.description == "Элитная трава для газона"
-    assert lawn_grass.price == 500.0
-    assert lawn_grass.quantity == 20
-    assert lawn_grass.country == "Россия"
-    assert lawn_grass.germination_period == "7 дней"
-    assert lawn_grass.color == "Зеленый"
-
-
 def test_product_str(product_1):
     assert str(product_1) == "1, 10 руб. Остаток: 15 шт."
 
@@ -113,33 +67,12 @@ def test_product_add(product_1, product_2):
     assert product_1 + product_2 == 250
 
 
-def test_product_add_smartphone(smartphone):
-    assert smartphone + smartphone == 3360000
+def test_product_add_exception(product_1, product_2):
+    with pytest.raises(TypeError):
+        product_1 + 0
 
 
-def test_product_add_lawn_grass(lawn_grass):
-    assert lawn_grass + lawn_grass == 20000
-
-
-def test_product_add_lawn_grass_with_smartphone_exception(lawn_grass, smartphone):
-    try:
-        lawn_grass + smartphone
-    except TypeError:
-        assert True
-    else:
-        assert False
-
-
-def test_product_add_lawn_grass_with_product(lawn_grass, product_1):
-    try:
-        lawn_grass + product_1
-    except TypeError:
-        assert True
-    else:
-        assert False
-
-
-def test_product_price(product_1, monkeypatch):
+def test_product_price(capsys, monkeypatch, product_1):
     assert product_1.price == 10
 
     product_1.price = 15
@@ -147,9 +80,13 @@ def test_product_price(product_1, monkeypatch):
 
     product_1.price = 0
     assert product_1.price == 15
+    message = capsys.readouterr()
+    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
     product_1.price = -10
     assert product_1.price == 15
+    message = capsys.readouterr()
+    assert message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
     monkeypatch.setattr("builtins.input", lambda _: "n")
     product_1.price = 10
