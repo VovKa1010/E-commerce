@@ -1,7 +1,8 @@
 from src.product.base_product import BaseProduct
+from src.print_mixin import PrintMixin
 
 
-class Product(BaseProduct):
+class Product(BaseProduct, PrintMixin):
     name: str
     description: str
     __price: float
@@ -12,6 +13,7 @@ class Product(BaseProduct):
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
@@ -49,4 +51,3 @@ class Product(BaseProduct):
                         new_product["price"] = old_product["price"]
 
             return cls(**new_product)
-

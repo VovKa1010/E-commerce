@@ -73,6 +73,7 @@ def test_product_add_exception(product_1, product_2):
 
 
 def test_product_price(capsys, monkeypatch, product_1):
+    capsys.readouterr()
     assert product_1.price == 10
 
     product_1.price = 15
@@ -103,6 +104,7 @@ def test_new_product(new_product_dict, old_products_list):
     assert pr_1.description == "256GB, Серый цвет, 200MP камера"
     assert pr_1.price == 180000
     assert pr_1.quantity == 5
+
     pr_2 = Product.new_product(new_product_dict, old_products_list)
     assert pr_2.name == "Samsung Galaxy S23 Ultra"
     assert pr_2.description == "256GB, Серый цвет, 200MP камера"
