@@ -1,6 +1,8 @@
 import pytest
 from src.category import *
-from test.test_product import product_1, product_2, smartphone, lawn_grass
+from test.test_product.test_product import product_1, product_2
+from test.test_product.test_smartphone import smartphone
+from test.test_product.test_lawn_grass import lawn_grass
 
 
 @pytest.fixture()
@@ -20,15 +22,11 @@ def test_category_init(category):
 
 
 def test_category_init_exception(product_1):
-    try:
+    with pytest.raises(TypeError):
         Category.category_count = 0
         Category.product_count = 0
         products = [product_1, None]
         Category("category", "category description", products)
-    except TypeError:
-        assert True
-    else:
-        assert False
 
 
 def test_category_str(category):
@@ -51,9 +49,5 @@ def test_category_add_product_lawn_grass(category, lawn_grass):
 
 
 def test_category_add_product_exception(category):
-    try:
+    with pytest.raises(TypeError):
         category.add_product(None)
-    except TypeError:
-        assert True
-    else:
-        assert False
