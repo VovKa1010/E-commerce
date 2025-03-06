@@ -59,6 +59,11 @@ def test_product_init(product_1):
     assert product_1.quantity == 15
 
 
+def test_product_init_quantity_zero():
+    with pytest.raises(ValueError):
+        Product("1", "1 description", 10, 0)
+
+
 def test_product_str(product_1):
     assert str(product_1) == "1, 10 руб. Остаток: 15 шт."
 
