@@ -24,13 +24,6 @@ class Category:
         sum_products_quantity = sum([product.quantity for product in self.__products])
         return f"{self.name}, количество продуктов: {sum_products_quantity} шт."
 
-    def add_product(self, product) -> None:
-        if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
-        else:
-            raise TypeError
-
     @property
     def products(self):
         result = ""
@@ -38,3 +31,18 @@ class Category:
             result += f"{product}\n"
 
         return result
+
+    def add_product(self, product) -> None:
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
+
+    def middle_price(self):
+        try:
+            sum_products = sum([product.price for product in self.__products])
+            avg_price = sum_products / len(self.__products)
+            return avg_price
+        except ZeroDivisionError:
+            return 0
