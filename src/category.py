@@ -1,4 +1,5 @@
 from src.base_class_me import BaseClassMe
+from src.exception.zero_product_quantity import ZeroProductQuantity
 from src.product.product import *
 
 
@@ -17,6 +18,8 @@ class Category(BaseClassMe):
         for product in products:
             if not isinstance(product, Product):
                 raise TypeError("Не все элементы списка products являются классом или наследником от Product")
+            elif product.quantity <= 0:
+                raise ZeroDivisionError
 
         self.name = name
         self.description = description
@@ -37,11 +40,20 @@ class Category(BaseClassMe):
         return result
 
     def add_product(self, product) -> None:
-        if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
+        try:
+            if isinstance(product, Product):
+                if product.quantity <= 0:
+                    raise ZeroProductQuantity
+                self.__products.append(product)
+                Category.product_count += 1
+            else:
+                raise TypeError
+        except ZeroProductQuantity as e:
+            print(e)
         else:
-            raise TypeError
+            print("Успешно добавлен товар")
+        finally:
+            print("Обработка добавления товара завершена")
 
     def middle_price(self):
         try:

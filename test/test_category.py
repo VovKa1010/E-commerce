@@ -28,6 +28,11 @@ def test_category_init(category):
     assert category.product_count == 2
 
 
+def test_category_init_without_products(category_without_products):
+    assert category_without_products.category_count == 1
+    assert category_without_products.product_count == 0
+
+
 def test_category_init_products_other_type(product_1):
     with pytest.raises(TypeError):
         Category.category_count = 0
@@ -36,31 +41,56 @@ def test_category_init_products_other_type(product_1):
         Category("category", "category description", products)
 
 
-def test_category_init_without_products(category_without_products):
-    assert category_without_products.category_count == 1
-    assert category_without_products.product_count == 0
+def test_category_init_products_quantity_zero(product_1, product_2):
+    with pytest.raises(ZeroDivisionError):
+        Category.category_count = 0
+        Category.product_count = 0
+        product_2.quantity -= product_2.quantity
+        products = [product_1, product_2]
+        Category("category", "category description", products)
 
 
 def test_category_str(category):
     assert str(category) == "category, количество продуктов: 20 шт."
 
 
-def test_category_add_product(category, product_1):
+def test_category_add_product(capsys, category, product_1):
     category.add_product(product_1)
     assert category.product_count == 3
+    message = capsys.readouterr()
+    messages_split = message.out.strip().split('\n')
+    assert messages_split[-2] == "Успешно добавлен товар"
+    assert messages_split[-1] == "Обработка добавления товара завершена"
 
 
-def test_category_add_product_smartphone(category, smartphone):
+def test_category_add_product_smartphone(capsys, category, smartphone):
     category.add_product(smartphone)
     assert category.product_count == 3
+    message = capsys.readouterr()
+    messages_split = message.out.strip().split('\n')
+    assert messages_split[-2] == "Успешно добавлен товар"
+    assert messages_split[-1] == "Обработка добавления товара завершена"
 
 
-def test_category_add_product_lawn_grass(category, lawn_grass):
+def test_category_add_product_lawn_grass(capsys, category, lawn_grass):
     category.add_product(lawn_grass)
     assert category.product_count == 3
+    message = capsys.readouterr()
+    messages_split = message.out.strip().split('\n')
+    assert messages_split[-2] == "Успешно добавлен товар"
+    assert messages_split[-1] == "Обработка добавления товара завершена"
 
 
-def test_category_add_product_exception(category):
+def test_category_add_product_quantity_zero(capsys, category, product_1):
+    product_1.quantity -= product_1.quantity
+    category.add_product(product_1)
+    message = capsys.readouterr()
+    messages_split = message.out.strip().split('\n')
+    assert messages_split[-2] == "Количество продукта не должно быть 0"
+    assert messages_split[-1] == "Обработка добавления товара завершена"
+
+
+def test_category_add_product_none(category):
     with pytest.raises(TypeError):
         category.add_product(None)
 
