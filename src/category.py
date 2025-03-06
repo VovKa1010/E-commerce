@@ -1,7 +1,8 @@
+from src.base_class_me import BaseClassMe
 from src.product.product import *
 
 
-class Category:
+class Category(BaseClassMe):
     name: str
     description: str
     __products: list
@@ -10,15 +11,18 @@ class Category:
 
     def __init__(self, name, description, products=None):
 
+        if not products:
+            products = []
+
         for product in products:
             if not isinstance(product, Product):
                 raise TypeError("Не все элементы списка products являются классом или наследником от Product")
 
         self.name = name
         self.description = description
-        self.__products = products if products else []
+        self.__products = products
         Category.category_count += 1
-        Category.product_count += len(products) if products else 0
+        Category.product_count += len(products)
 
     def __str__(self):
         sum_products_quantity = sum([product.quantity for product in self.__products])

@@ -13,6 +13,13 @@ def category(product_1, product_2):
     return Category("category", "category description", products)
 
 
+@pytest.fixture()
+def category_without_products(product_1, product_2):
+    Category.category_count = 0
+    Category.product_count = 0
+    return Category("category", "category description")
+
+
 def test_category_init(category):
     assert category.name == "category"
     assert category.description == "category description"
@@ -21,12 +28,17 @@ def test_category_init(category):
     assert category.product_count == 2
 
 
-def test_category_init_exception(product_1):
+def test_category_init_products_other_type(product_1):
     with pytest.raises(TypeError):
         Category.category_count = 0
         Category.product_count = 0
         products = [product_1, None]
         Category("category", "category description", products)
+
+
+def test_category_init_without_products(category_without_products):
+    assert category_without_products.category_count == 1
+    assert category_without_products.product_count == 0
 
 
 def test_category_str(category):
@@ -51,3 +63,11 @@ def test_category_add_product_lawn_grass(category, lawn_grass):
 def test_category_add_product_exception(category):
     with pytest.raises(TypeError):
         category.add_product(None)
+
+
+def test_category_middle_price(category):
+    assert category.middle_price() == 15
+
+
+def test_category_middle_price_without_products(category_without_products):
+    assert category_without_products.middle_price() == 0

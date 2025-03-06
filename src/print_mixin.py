@@ -4,4 +4,10 @@ class PrintMixin:
         print(repr(self))
 
     def __repr__(self):
-        return f"{self.__class__.__name__}('{self.name}', '{self.description}', {self.price}, {self.quantity})"
+        properties = ""
+        for item in vars(self).values():
+            if isinstance(item, str):
+                properties += f", '{item}'"
+            else:
+                properties += f", {repr(item)}"
+        return f"{self.__class__.__name__}({properties[2:]})"
